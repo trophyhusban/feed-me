@@ -11,13 +11,11 @@ class Play extends Phaser.Scene {
         // load explosion sprite sheet
         this.load.spritesheet("pink mouth", "./assets/pink_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
         this.load.spritesheet("red mouth", "./assets/red_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
-        this.load.spritesheet("green mouth", "./assets/green_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
         this.load.spritesheet("pink lick", "./assets/pink_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
         this.load.spritesheet("red lick", "./assets/red_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
-        this.load.spritesheet("green lick", "./assets/green_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
-        this.load.spritesheet("fry", "./assets/fry.png", {frameWidth: 10, frameHeight: 32, startFrame:0, endFrame:1});
         this.load.spritesheet("eyeball", "./assets/eyeball.png", {frameWidth: 32, frameHeight: 32, startFrame:0, endFrame: 0});
         this.load.spritesheet("eyeball hurt", "./assets/eyeball_hurt.png", {frameWidth: 32, frameHeight:32, startFrame:0, endFrame: 1});
+        this.load.spritesheet("eye", "./assets/eye_blink.png", {frameWidth: 120, frameHeight: 64, startFrame:0, endFrame:5} );
     }
 
     create() {
@@ -39,14 +37,6 @@ class Play extends Phaser.Scene {
         });
 
         this.anims.create({
-            key: "green mouth",
-            frames: this.anims.generateFrameNumbers("green mouth", { frames: [0, 1, 2, 3, 4, 5] }),
-            frameRate: 10,
-            repeat: -1,
-            yoyo: true,
-        });
-
-        this.anims.create({
             key: "pink lick",
             frames: this.anims.generateFrameNumbers("pink lick", { frames: [0, 1, 2, 3, 4, 5, 6, 7] }),
             frameRate: 10,
@@ -55,12 +45,6 @@ class Play extends Phaser.Scene {
         this.anims.create({
             key: "red lick",
             frames: this.anims.generateFrameNumbers("red lick", { frames: [0, 1, 2, 3, 4, 5, 6, 7] }),
-            frameRate: 10,
-        });
-
-        this.anims.create({
-            key: "green lick",
-            frames: this.anims.generateFrameNumbers("green lick", { frames: [0, 1, 2, 3, 4, 5, 6, 7] }),
             frameRate: 10,
         });
 
@@ -74,6 +58,12 @@ class Play extends Phaser.Scene {
             key: "eyeball hurt",
             frames: this.anims.generateFrameNumbers("eyeball hurt", { frames: [0] }),
             frameRate: 1
+        });
+
+        this.anims.create({
+            key: "eye",
+            frames: this.anims.generateFrameNumbers("eye", { frames: [0, 1, 2, 3, 4, 5] }),
+            yoyo: true
         });
 
         // checkers
@@ -130,17 +120,6 @@ class Play extends Phaser.Scene {
             []
             ).setOrigin(0,0); 
 
-
-
-        // top bar
-        this.add.rectangle(
-            0, 
-            borderUISize + borderPadding, 
-            game.config.width,
-            borderUISize * 2,
-            0xd9522b
-            ).setOrigin(0,0);
-
         // white bars UI
         this.add.rectangle(
             0, 
@@ -171,6 +150,18 @@ class Play extends Phaser.Scene {
             0xFFFFFF
             ).setOrigin(0 ,0);
 
+        this.add.sprite(
+            borderUISize*2,
+            borderUISize*2.5,
+            "eye"
+            ).setOrigin(0,0.5);
+        
+        this.add.sprite(
+            config.width - borderUISize*2 - 120,
+            borderUISize*2.5,
+            "eye"
+            ).setOrigin(0,0.5);
+
         this.p1Fry = new Fry(
             this, 
             game.config.width/2, 
@@ -190,17 +181,13 @@ class Play extends Phaser.Scene {
         let scoreConfig = {
             fontFamily: "Courier",
             fontSize: "28px",
-            backgroundColor: '#F3B141',
-            color: "#843605",
-            align: "right",
-            padding: {
-                top: 5,
-                bottom: 5
-            },
-            fixedWidth: 100
+            color: "#000",
+            backgroundColor: "#fff",
+            align: "center",
+            padding: 5
         }
         this.scoreLeft = this.add.text(
-            borderUISize + borderPadding,
+            config.width/2,
             borderUISize + borderPadding*2,
             this.p1Score,
             scoreConfig);
