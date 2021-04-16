@@ -10,8 +10,9 @@ class Play extends Phaser.Scene {
         this.load.image("white tile", "./assets/white_tile.png");
         // load explosion sprite sheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
-        this.load.spritesheet("pink mouth", "./assets/pink_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 5});
-        this.load.spritesheet("red mouth", "./assets/red_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 5});
+        this.load.spritesheet("pink mouth", "./assets/pink_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
+        this.load.spritesheet("red mouth", "./assets/red_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
+        this.load.spritesheet("green mouth", "./assets/green_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
     }
 
     create() {
@@ -19,18 +20,26 @@ class Play extends Phaser.Scene {
         // mouth animation
         this.anims.create({
             key: "pink mouth",
-            frames: this.anims.generateFrameNumbers("pink mouth", { frames: [0, 1, 2, 3, 4] }),
+            frames: this.anims.generateFrameNumbers("pink mouth", { frames: [0, 1, 2, 3, 4, 5] }),
             frameRate: 10,
             repeat: -1,
             yoyo: true,
-        })
+        });
         this.anims.create({
             key: "red mouth",
-            frames: this.anims.generateFrameNumbers("red mouth", { frames: [0, 1, 2, 3, 4] }),
+            frames: this.anims.generateFrameNumbers("red mouth", { frames: [0, 1, 2, 3, 4, 5] }),
             frameRate: 10,
             repeat: -1,
             yoyo: true,
-        })
+        });
+
+        this.anims.create({
+            key: "green mouth",
+            frames: this.anims.generateFrameNumbers("green mouth", { frames: [0, 1, 2, 3, 4, 5] }),
+            frameRate: 10,
+            repeat: -1,
+            yoyo: true,
+        });
 
         // checkers
         this.checkers = this.add.tileSprite(
@@ -63,7 +72,7 @@ class Play extends Phaser.Scene {
             "pink mouth",
             0, 
             30,
-            "back and forth"
+            "sine"
             ).setOrigin(0,0);
         
         this.mouth1.play(this.mouth1.texture);
@@ -71,11 +80,11 @@ class Play extends Phaser.Scene {
         this.mouth2 = new Mouth(
             this, 
             0, 
-            borderUISize*5, 
+            borderUISize*6 + 2, 
             "red mouth",
             0, 
             20,
-            "sin"
+            "back and forth"
             ).setOrigin(0,0);
         
         this.mouth2.play(this.mouth2.texture);
@@ -83,8 +92,8 @@ class Play extends Phaser.Scene {
         this.mouth3 = new Mouth(
             this, 
             config.width/2 - config.width/6 + 30,
-            borderUISize*6, 
-            "red mouth",
+            borderUISize*8 + 4, 
+            "green mouth",
             0, 
             10,
             "back and forth"
@@ -184,7 +193,7 @@ class Play extends Phaser.Scene {
         this.checkers.tilePositionY -= .5;
         this.grid.tilePositionX += .25;
         this.grid.tilePositionY += .25;
-        
+
         if (this.gameOver == false) {
             this.p1Rocket.update();
             this.mouth1.update();
@@ -226,11 +235,10 @@ class Play extends Phaser.Scene {
         //hide the ship
         ship.alpha = 0;
         
-        //create explosion sprite
+        // they lick their lips :P
         let boom = this.add.sprite(ship.x, ship.y, "explosion").setOrigin(0,0);
         boom.anims.play("explode");
         boom.on("animationcomplete", () =>{
-            ship.reset();
             ship.alpha = 1;
             boom.destroy();
         })
