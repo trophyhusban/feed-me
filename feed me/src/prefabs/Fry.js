@@ -1,4 +1,4 @@
-class Rocket extends Phaser.GameObjects.Sprite {
+class Fry extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
 
@@ -33,7 +33,7 @@ class Rocket extends Phaser.GameObjects.Sprite {
         
         //if fired, move up
         if(this.isFiring && this.y >= this.maxY + borderPadding) {
-            this.y -= this.speed;
+            this.y -= this.speed*1.5;
         }
 
         //reset on miss

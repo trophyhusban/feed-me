@@ -5,17 +5,17 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images so they can be used
-        this.load.image("rocket", "./assets/rocket.png");
+        this.load.image("nugget", "./assets/nugget.png");
         this.load.image("tile", "./assets/tile.png");
         this.load.image("white tile", "./assets/white_tile.png");
         // load explosion sprite sheet
-        this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
         this.load.spritesheet("pink mouth", "./assets/pink_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
         this.load.spritesheet("red mouth", "./assets/red_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
         this.load.spritesheet("green mouth", "./assets/green_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
         this.load.spritesheet("pink lick", "./assets/pink_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
         this.load.spritesheet("red lick", "./assets/red_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
         this.load.spritesheet("green lick", "./assets/green_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
+        this.load.spritesheet("fry", "./assets/fry.png", {frameWidth: 10, frameHeight: 32, startFrame:0, endFrame:1});
     }
 
     create() {
@@ -62,6 +62,13 @@ class Play extends Phaser.Scene {
             frameRate: 10,
         });
 
+        this.anims.create({
+            key: "fry",
+            frames: this.anims.generateFrameNumbers("fry", {frames: [0, 1]}),
+            frameRate: 10,
+            repeat: -1,
+        });
+
         // checkers
         this.checkers = this.add.tileSprite(
             0, 
@@ -78,13 +85,6 @@ class Play extends Phaser.Scene {
             480,
             "white tile"
             ).setOrigin(0,0);
-
-        this.p1Rocket = new Rocket(
-            this, 
-            game.config.width/2, 
-            game.config.height - borderUISize*2, 
-            "rocket"
-            ).setOrigin(.5, 0);
 
         this.mouth1 = new Mouth(
             this, 
@@ -121,12 +121,6 @@ class Play extends Phaser.Scene {
             ).setOrigin(0,0); 
 
         this.mouth3.play(this.mouth3.texture);
-
-        this.anims.create({
-            key: "explode",
-            frames: this.anims.generateFrameNumbers("explosion", {start: 0, end: 9, first: 0}),
-            frameRate: 30
-        })
 
         // top bar
         this.add.rectangle(
@@ -166,6 +160,13 @@ class Play extends Phaser.Scene {
             game.config.height, 
             0xFFFFFF
             ).setOrigin(0 ,0);
+
+        this.p1Fry = new Fry(
+            this, 
+            game.config.width/2, 
+            game.config.height - borderUISize*3, 
+            "nugget"
+            ).setOrigin(.5, 0);
 
         // defining keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -216,7 +217,7 @@ class Play extends Phaser.Scene {
         this.grid.tilePositionY += .25;
 
         if (this.gameOver == false) {
-            this.p1Rocket.update();
+            this.p1Fry.update();
             this.mouth1.update();
             this.mouth2.update();
             this.mouth3.update();
@@ -226,26 +227,26 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
         }
         
-        if (this.checkCollision(this.p1Rocket, this.mouth1)) {
-            this.p1Rocket.reset();
+        if (this.checkCollision(this.p1Fry, this.mouth1)) {
+            this.p1Fry.reset();
             this.shipExplode(this.mouth1, "pink lick");
         }
-        if (this.checkCollision(this.p1Rocket, this.mouth2)) {
-            this.p1Rocket.reset();
+        if (this.checkCollision(this.p1Fry, this.mouth2)) {
+            this.p1Fry.reset();
             this.shipExplode(this.mouth2, "red lick");
         }
-        if (this.checkCollision(this.p1Rocket, this.mouth3)) {
-            this.p1Rocket.reset();
+        if (this.checkCollision(this.p1Fry, this.mouth3)) {
+            this.p1Fry.reset();
             this.shipExplode(this.mouth3, "green lick");
         }
     }
 
-    checkCollision(rocket, mouth) {
+    checkCollision(fry, mouth) {
         // simple AABB checking
-        if (rocket.x < mouth.x + mouth.width && 
-            rocket.x + rocket.width > mouth.x && 
-            rocket.y < mouth.y + mouth.height &&
-            rocket.y + rocket.height > mouth.y) {
+        if (fry.x < mouth.x + mouth.width && 
+            fry.x + fry.width > mouth.x && 
+            mouth.y + mouth.height/2 <= fry.y + fry.height/2 &&
+            mouth.y + mouth.height/2 >= fry.y) {
                 return true;
         } else {
             return false;
