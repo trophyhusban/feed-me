@@ -16,6 +16,8 @@ class Play extends Phaser.Scene {
         this.load.spritesheet("red lick", "./assets/red_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
         this.load.spritesheet("green lick", "./assets/green_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
         this.load.spritesheet("fry", "./assets/fry.png", {frameWidth: 10, frameHeight: 32, startFrame:0, endFrame:1});
+        this.load.spritesheet("eyeball", "./assets/eyeball.png", {frameWidth: 32, frameHeight: 32, startFrame:0, endFrame: 0});
+        this.load.spritesheet("eyeball hurt", "./assets/eyeball_hurt.png", {frameWidth: 32, frameHeight:32, startFrame:0, endFrame: 1});
     }
 
     create() {
@@ -63,10 +65,15 @@ class Play extends Phaser.Scene {
         });
 
         this.anims.create({
-            key: "fry",
-            frames: this.anims.generateFrameNumbers("fry", {frames: [0, 1]}),
-            frameRate: 10,
+            key: "eyeball",
+            frames: this.anims.generateFrameNumbers("eyeball", { frames: [0] }),
             repeat: -1,
+        });
+
+        this.anims.create({
+            key: "eyeball hurt",
+            frames: this.anims.generateFrameNumbers("eyeball hurt", { frames: [0] }),
+            frameRate: 1
         });
 
         // checkers
@@ -116,14 +123,14 @@ class Play extends Phaser.Scene {
             this, 
             config.width/2 - config.width/6 + 30,
             borderUISize*8 + 4, 
-            "green mouth",
+            "eyeball",
             0, 
-            10,
+            0,
             "back and forth",
-            ["thank you", "tasty"]
+            []
             ).setOrigin(0,0); 
 
-        this.mouth3.play(this.mouth3.texture);
+
 
         // top bar
         this.add.rectangle(
@@ -240,7 +247,7 @@ class Play extends Phaser.Scene {
         }
         if (this.checkCollision(this.p1Fry, this.mouth3)) {
             this.p1Fry.reset();
-            this.eatNugget(this.mouth3, "green lick");
+            this.eatNugget(this.mouth3, "eyeball hurt");
         }
     }
 
@@ -271,6 +278,8 @@ class Play extends Phaser.Scene {
         
         this.p1Score += mouth.points;
         this.scoreLeft.text = this.p1Score;
-        this.sound.play(mouth.sounds[randSound]);
+        if (mouth.sounds.length > 0) {
+            this.sound.play(mouth.sounds[randSound]);
+        }
     }
 }

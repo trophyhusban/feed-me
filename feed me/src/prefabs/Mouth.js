@@ -5,7 +5,10 @@ class Mouth extends Phaser.GameObjects.Sprite {
         this.points = pointValue;
         this.speed = game.settings.mouthSpeed;
         this.ai = ai;
-        this.direction = -1;
+        this.direction = Math.floor(Math.random()*2);
+        if (this.direction == 0) {
+            this.direction = -1;
+        }
         this.time = 0;
         this.sinSpeed = (1.5/this.speed)*100;
         this.minX = x;
