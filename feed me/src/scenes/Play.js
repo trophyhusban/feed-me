@@ -7,10 +7,11 @@ class Play extends Phaser.Scene {
         // load images so they can be used
         this.load.image("rocket", "./assets/rocket.png");
         this.load.image("tile", "./assets/tile.png");
+        this.load.image("white tile", "./assets/white_tile.png");
         // load explosion sprite sheet
         this.load.spritesheet('explosion', './assets/explosion.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
-        this.load.spritesheet("pink mouth", "./assets/pink_mouth.png", {frameWidth:60, frameHeight:32, startFrame:0, endFrame: 5});
-        this.load.spritesheet("red mouth", "./assets/red_mouth.png", {frameWidth:60, frameHeight:32, startFrame:0, endFrame: 5});
+        this.load.spritesheet("pink mouth", "./assets/pink_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 5});
+        this.load.spritesheet("red mouth", "./assets/red_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 5});
     }
 
     create() {
@@ -32,21 +33,20 @@ class Play extends Phaser.Scene {
         })
 
         // checkers
-        this.background = this.add.tileSprite(
+        this.checkers = this.add.tileSprite(
             0, 
             0, 
             640, 
             480, 
             "tile"
             ).setOrigin(0,0);
-
-        // green UI background
-        this.add.rectangle(
+        
+        this.grid = this.add.tileSprite(
             0, 
-            borderUISize + borderPadding, 
-            game.config.width,
-            borderUISize * 2,
-            0x00FF00
+            0,
+            640,
+            480,
+            "white tile"
             ).setOrigin(0,0);
 
         this.p1Rocket = new Rocket(
@@ -70,7 +70,7 @@ class Play extends Phaser.Scene {
         
         this.mouth2 = new Mouth(
             this, 
-            config.width/2 + 30, 
+            0, 
             borderUISize*5, 
             "red mouth",
             0, 
@@ -97,6 +97,15 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("explosion", {start: 0, end: 9, first: 0}),
             frameRate: 30
         })
+
+        // top bar
+        this.add.rectangle(
+            0, 
+            borderUISize + borderPadding, 
+            game.config.width,
+            borderUISize * 2,
+            0xd9522b
+            ).setOrigin(0,0);
 
         // white bars UI
         this.add.rectangle(
@@ -127,9 +136,6 @@ class Play extends Phaser.Scene {
             game.config.height, 
             0xFFFFFF
             ).setOrigin(0 ,0);
-
-        
-
 
         // defining keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -174,9 +180,12 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
             this.scene.restart();
         }
+        this.checkers.tilePositionX -= .5;
+        this.checkers.tilePositionY -= .5;
+        this.grid.tilePositionX += .25;
+        this.grid.tilePositionY += .25;
+        
         if (this.gameOver == false) {
-            this.background.tilePositionX -= 1;
-            this.background.tilePositionY -= 1;
             this.p1Rocket.update();
             this.mouth1.update();
             this.mouth2.update();
