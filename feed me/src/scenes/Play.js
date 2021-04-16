@@ -13,6 +13,9 @@ class Play extends Phaser.Scene {
         this.load.spritesheet("pink mouth", "./assets/pink_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
         this.load.spritesheet("red mouth", "./assets/red_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
         this.load.spritesheet("green mouth", "./assets/green_mouth.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 6});
+        this.load.spritesheet("pink lick", "./assets/pink_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
+        this.load.spritesheet("red lick", "./assets/red_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
+        this.load.spritesheet("green lick", "./assets/green_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
     }
 
     create() {
@@ -39,6 +42,24 @@ class Play extends Phaser.Scene {
             frameRate: 10,
             repeat: -1,
             yoyo: true,
+        });
+
+        this.anims.create({
+            key: "pink lick",
+            frames: this.anims.generateFrameNumbers("pink lick", { frames: [0, 1, 2, 3, 4, 5, 6, 7] }),
+            frameRate: 10,
+        });
+
+        this.anims.create({
+            key: "red lick",
+            frames: this.anims.generateFrameNumbers("red lick", { frames: [0, 1, 2, 3, 4, 5, 6, 7] }),
+            frameRate: 10,
+        });
+
+        this.anims.create({
+            key: "green lick",
+            frames: this.anims.generateFrameNumbers("green lick", { frames: [0, 1, 2, 3, 4, 5, 6, 7] }),
+            frameRate: 10,
         });
 
         // checkers
@@ -207,15 +228,15 @@ class Play extends Phaser.Scene {
         
         if (this.checkCollision(this.p1Rocket, this.mouth1)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.mouth1);
+            this.shipExplode(this.mouth1, "pink lick");
         }
         if (this.checkCollision(this.p1Rocket, this.mouth2)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.mouth2);
+            this.shipExplode(this.mouth2, "red lick");
         }
         if (this.checkCollision(this.p1Rocket, this.mouth3)) {
             this.p1Rocket.reset();
-            this.shipExplode(this.mouth3);
+            this.shipExplode(this.mouth3, "green lick");
         }
     }
 
@@ -224,22 +245,24 @@ class Play extends Phaser.Scene {
         if (rocket.x < mouth.x + mouth.width && 
             rocket.x + rocket.width > mouth.x && 
             rocket.y < mouth.y + mouth.height &&
-            rocket.height + rocket.y > mouth.y) {
+            rocket.y + rocket.height > mouth.y) {
                 return true;
         } else {
             return false;
         }
     }
     
-    shipExplode(ship) {
+    shipExplode(ship, key) {
         //hide the ship
         ship.alpha = 0;
+        ship.isEating = true;
         
         // they lick their lips :P
         let boom = this.add.sprite(ship.x, ship.y, "explosion").setOrigin(0,0);
-        boom.anims.play("explode");
+        boom.anims.play(key);
         boom.on("animationcomplete", () =>{
             ship.alpha = 1;
+            ship.isEating = false;
             boom.destroy();
         })
         this.p1Score += ship.points;
