@@ -93,7 +93,8 @@ class Play extends Phaser.Scene {
             "pink mouth",
             0, 
             30,
-            "sine"
+            "sine",
+            ["yum", "mmm"]
             ).setOrigin(0,0);
         
         this.mouth1.play(this.mouth1.texture);
@@ -105,7 +106,8 @@ class Play extends Phaser.Scene {
             "red mouth",
             0, 
             20,
-            "back and forth"
+            "back and forth",
+            ["nom", "yummy"]
             ).setOrigin(0,0);
         
         this.mouth2.play(this.mouth2.texture);
@@ -117,7 +119,8 @@ class Play extends Phaser.Scene {
             "green mouth",
             0, 
             10,
-            "back and forth"
+            "back and forth",
+            ["thank you", "tasty"]
             ).setOrigin(0,0); 
 
         this.mouth3.play(this.mouth3.texture);
@@ -229,15 +232,15 @@ class Play extends Phaser.Scene {
         
         if (this.checkCollision(this.p1Fry, this.mouth1)) {
             this.p1Fry.reset();
-            this.shipExplode(this.mouth1, "pink lick");
+            this.eatNugget(this.mouth1, "pink lick");
         }
         if (this.checkCollision(this.p1Fry, this.mouth2)) {
             this.p1Fry.reset();
-            this.shipExplode(this.mouth2, "red lick");
+            this.eatNugget(this.mouth2, "red lick");
         }
         if (this.checkCollision(this.p1Fry, this.mouth3)) {
             this.p1Fry.reset();
-            this.shipExplode(this.mouth3, "green lick");
+            this.eatNugget(this.mouth3, "green lick");
         }
     }
 
@@ -253,21 +256,21 @@ class Play extends Phaser.Scene {
         }
     }
     
-    shipExplode(ship, key) {
-        //hide the ship
-        ship.alpha = 0;
-        ship.isEating = true;
-        
-        // they lick their lips :P
-        let boom = this.add.sprite(ship.x, ship.y, "explosion").setOrigin(0,0);
-        boom.anims.play(key);
-        boom.on("animationcomplete", () =>{
-            ship.alpha = 1;
-            ship.isEating = false;
-            boom.destroy();
+    eatNugget(mouth, key) {
+        let tex = mouth.texture;
+        mouth.texture = key;
+        mouth.play(key);
+        mouth.isEating = true;
+        mouth.on("animationcomplete", () => {
+            mouth.texture = tex;
+            mouth.play(tex);
+            mouth.isEating = false;
         })
-        this.p1Score += ship.points;
+
+        let randSound = Math.floor(Math.random()*2);
+        
+        this.p1Score += mouth.points;
         this.scoreLeft.text = this.p1Score;
-        this.sound.play("sfx_explosion");
+        this.sound.play(mouth.sounds[randSound]);
     }
 }
