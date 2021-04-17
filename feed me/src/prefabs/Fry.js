@@ -1,5 +1,5 @@
 class Fry extends Phaser.GameObjects.Sprite {
-    constructor(scene, x, y, texture, frame) {
+    constructor(scene, x, y, texture, textureArray, frame) {
         super(scene, x, y, texture, frame);
 
         // add object to existing scene
@@ -11,6 +11,8 @@ class Fry extends Phaser.GameObjects.Sprite {
         this.initialX = x;
         this.initialY = y;
         this.sfxRocket = scene.sound.add("sfx_rocket"); // add rocket sfx
+        this.currentNugget = 0;
+        this.nuggets = textureArray;
     }
 
     update() {
@@ -38,9 +40,8 @@ class Fry extends Phaser.GameObjects.Sprite {
 
         //reset on miss
         if(this.y <= this.maxY + borderPadding) {
-            this.isFiring = false;
-            this.y = this.initialY;
-            this.x = this.initialX;
+            this.reset();
+            
         }
     }
 
@@ -48,5 +49,10 @@ class Fry extends Phaser.GameObjects.Sprite {
         this.isFiring = false;
         this.y = this.initialY;
         this.x = this.initialX;
+        this.currentNugget++;
+        if (this.currentNugget == this.nuggets.length) {
+            this.currentNugget = 0;
+        }
+        this.setTexture(this.nuggets[this.currentNugget]);
     }
 }

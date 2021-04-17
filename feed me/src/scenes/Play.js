@@ -5,7 +5,11 @@ class Play extends Phaser.Scene {
 
     preload() {
         // load images so they can be used
-        this.load.image("nugget", "./assets/nugget.png");
+        this.load.image("nugget1", "./assets/nugget1.png");
+        this.load.image("nugget2", "./assets/nugget2.png");
+        this.load.image("nugget3", "./assets/nugget3.png");
+        this.load.image("nugget4", "./assets/nugget4.png");
+        this.load.image("nugget5", "./assets/nugget5.png");
         this.load.image("tile", "./assets/tile.png");
         this.load.image("white tile", "./assets/white_tile.png");
         // load explosion sprite sheet
@@ -16,9 +20,16 @@ class Play extends Phaser.Scene {
         this.load.spritesheet("eyeball", "./assets/eyeball.png", {frameWidth: 32, frameHeight: 32, startFrame:0, endFrame: 0});
         this.load.spritesheet("eyeball hurt", "./assets/eyeball_hurt.png", {frameWidth: 32, frameHeight:32, startFrame:0, endFrame: 0});
         this.load.spritesheet("eye", "./assets/eye_blink.png", {frameWidth: 120, frameHeight: 64, startFrame:0, endFrame:5} );
+        this.load.spritesheet("all nuggets", "./assets/nugget.png", {frameWidth: 32, frameHeight: 34, startFrame: 0, endFrame: 4});
     }
 
     create() {
+        // nuggets
+        this.anims.create({
+            key: "all nuggets",
+            frames: this.anims.generateFrameNumbers("all nuggets", { frames: [0, 1, 2, 3, 4] }),
+            frameRate: 10,
+        });
 
         // mouth animation
         this.anims.create({
@@ -161,12 +172,15 @@ class Play extends Phaser.Scene {
             borderUISize*2.5,
             "eye"
             ).setOrigin(0,0.5);
-
+        
+        this.nuggets = ["nugget1", "nugget2", "nugget3", "nugget4", "nugget5"];
+        
         this.p1Fry = new Fry(
             this, 
             game.config.width/2, 
             game.config.height - borderUISize*3, 
-            "nugget"
+            "all nuggets",
+            this.nuggets
             ).setOrigin(.5, 0);
 
         // defining keys
