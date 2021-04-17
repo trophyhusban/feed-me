@@ -74,7 +74,7 @@ class Play extends Phaser.Scene {
             480, 
             "tile"
             ).setOrigin(0,0);
-        
+
         this.grid = this.add.tileSprite(
             0, 
             0,
@@ -89,7 +89,7 @@ class Play extends Phaser.Scene {
             borderUISize*4, 
             "pink mouth",
             0, 
-            30,
+            2,
             "sine",
             ["yum", "mmm"]
             ).setOrigin(0,0);
@@ -102,7 +102,7 @@ class Play extends Phaser.Scene {
             borderUISize*6 + 2, 
             "red mouth",
             0, 
-            20,
+            1,
             "back and forth",
             ["nom", "yummy"]
             ).setOrigin(0,0);
@@ -115,7 +115,7 @@ class Play extends Phaser.Scene {
             borderUISize*8 + 4, 
             "eyeball",
             0, 
-            0,
+            -1,
             "back and forth",
             []
             ).setOrigin(0,0); 
@@ -212,16 +212,15 @@ class Play extends Phaser.Scene {
         if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyF)) {
             this.scene.restart();
         }
-        this.checkers.tilePositionX -= .5;
-        this.checkers.tilePositionY -= .5;
-        this.grid.tilePositionX += .25;
-        this.grid.tilePositionY += .25;
+        
+        this.animateTiles();
+
+        this.mouth1.update();
+        this.mouth2.update();
+        this.mouth3.update();
 
         if (this.gameOver == false) {
-            this.p1Fry.update();
-            this.mouth1.update();
-            this.mouth2.update();
-            this.mouth3.update();
+            this.p1Fry.update();    
         }
 
         if (this.gameOver &&Phaser.Input.Keyboard.JustDown(keyLEFT)) {
@@ -275,9 +274,18 @@ class Play extends Phaser.Scene {
         let randSound = Math.floor(Math.random()*2);
         
         this.p1Score += mouth.points;
+        if (this.p1Score < 0) {
+            this.p1Score = 0;
+        }
         this.scoreLeft.text = this.p1Score;
         if (mouth.sounds.length > 0) {
             this.sound.play(mouth.sounds[randSound]);
         }
+    }
+    animateTiles() {
+        this.checkers.tilePositionX -= .5;
+        this.checkers.tilePositionY -= .5;
+        this.grid.tilePositionX += .25;
+        this.grid.tilePositionY += .25;
     }
 }

@@ -7,17 +7,38 @@ class Menu extends Phaser.Scene {
     preload() {
         //load audio
         this.load.audio("sfx_select", "./assets/blip_select12.wav");
-        this.load.audio("sfx_explosion", "./assets/explosion38.wav");
         this.load.audio("sfx_rocket", "./assets/rocket_shot.wav");
         this.load.audio("yum", "./assets/yum.mp3");
-        this.load.audio("thank you", "./assets/thank you.mp3");
-        this.load.audio("tasty", "./assets/tasty.mp3");
         this.load.audio("nom", "./assets/nom.mp3");
         this.load.audio("mmm", "./assets/mmm.mp3");
         this.load.audio("yummy", "./assets/yummy.mp3");
+        this.load.image("tile", "./assets/tile.png");
+        this.load.image("white tile", "./assets/white_tile.png");
+        this.load.image("menu", "./assets/menu.png");
     }
 
     create() {
+        // checkers
+        this.checkers = this.add.tileSprite(
+            0, 
+            0, 
+            640, 
+            480, 
+            "tile"
+            ).setOrigin(0,0);
+
+        this.grid = this.add.tileSprite(
+            0, 
+            0,
+            640,
+            480,
+            "white tile"
+            ).setOrigin(0,0);
+
+        this.add.image(0, 0, "menu").setOrigin(0,0);
+        
+        
+
         let menuConfig = {
             fontFamily: "Courier",
             fontSize: "28px",
@@ -32,11 +53,11 @@ class Menu extends Phaser.Scene {
         }
 
         //show menu text
-        this.add.text(config.width/2, config.height/2 - borderUISize - borderPadding, "ROCKET PATROL", menuConfig).setOrigin(.5);
-        this.add.text(config.width/2, config.height/2, 'use ⬅ and ➡ to move and "F" to fire', menuConfig).setOrigin(.5);
+        //this.add.text(config.width/2, config.height/2 - borderUISize - borderPadding, "ROCKET PATROL", menuConfig).setOrigin(.5);
+        //this.add.text(config.width/2, config.height/2, 'use ⬅ and ➡ to move and "F" to fire', menuConfig).setOrigin(.5);
         menuConfig.backgroundColor = "#00FF00";
         menuConfig.color = "#000000";
-        this.add.text(config.width/2, config.height/2 + borderUISize + borderPadding, "press ⬅ for novice or ➡ for expert", menuConfig).setOrigin(.5);
+        //this.add.text(config.width/2, config.height/2 + borderUISize + borderPadding, "press ⬅ for novice or ➡ for expert", menuConfig).setOrigin(.5);
         
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -61,5 +82,12 @@ class Menu extends Phaser.Scene {
             this.sound.play("sfx_select");
             this.scene.start("playScene");
         }
+        this.animateTiles();
+    }
+    animateTiles() {
+        this.checkers.tilePositionX -= .5;
+        this.checkers.tilePositionY -= .5;
+        this.grid.tilePositionX += .25;
+        this.grid.tilePositionY += .25;
     }
 }

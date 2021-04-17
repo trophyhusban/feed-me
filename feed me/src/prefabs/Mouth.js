@@ -10,7 +10,7 @@ class Mouth extends Phaser.GameObjects.Sprite {
             this.direction = -1;
         }
         this.time = 0;
-        this.sinSpeed = (1.5/this.speed)*100;
+        this.sinSpeed = (1.25/this.speed)*100;
         this.minX = x;
         this.maxX = x;
         this.eatingSpeedDifference = 0;
