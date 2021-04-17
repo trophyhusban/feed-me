@@ -14,7 +14,7 @@ class Play extends Phaser.Scene {
         this.load.spritesheet("pink lick", "./assets/pink_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
         this.load.spritesheet("red lick", "./assets/red_lick.png", {frameWidth:120, frameHeight:64, startFrame:0, endFrame: 7});
         this.load.spritesheet("eyeball", "./assets/eyeball.png", {frameWidth: 32, frameHeight: 32, startFrame:0, endFrame: 0});
-        this.load.spritesheet("eyeball hurt", "./assets/eyeball_hurt.png", {frameWidth: 32, frameHeight:32, startFrame:0, endFrame: 1});
+        this.load.spritesheet("eyeball hurt", "./assets/eyeball_hurt.png", {frameWidth: 32, frameHeight:32, startFrame:0, endFrame: 0});
         this.load.spritesheet("eye", "./assets/eye_blink.png", {frameWidth: 120, frameHeight: 64, startFrame:0, endFrame:5} );
     }
 
@@ -150,13 +150,13 @@ class Play extends Phaser.Scene {
             0xFFFFFF
             ).setOrigin(0 ,0);
 
-        this.add.sprite(
+        this.leftEye = this.add.sprite(
             borderUISize*2,
             borderUISize*2.5,
             "eye"
             ).setOrigin(0,0.5);
         
-        this.add.sprite(
+        this.rightEye = this.add.sprite(
             config.width - borderUISize*2 - 120,
             borderUISize*2.5,
             "eye"
@@ -176,6 +176,10 @@ class Play extends Phaser.Scene {
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         
         this.p1Score = 0;
+        
+        // making the eyes on top blink
+        this.blinkTimer = 0;
+        this.nextBlink = Math.floor(Math.random()*500) + 1000;
         
         //display score
         let scoreConfig = {
@@ -235,6 +239,13 @@ class Play extends Phaser.Scene {
         if (this.checkCollision(this.p1Fry, this.mouth3)) {
             this.p1Fry.reset();
             this.eatNugget(this.mouth3, "eyeball hurt");
+        }
+        this.blinkTimer ++;
+        if (this.blinkTimer == this.nextBlink) {
+            this.blinkTimer = 0;
+            this.nextBlink = Math.floor(Math.random()*500) + 1000;
+            this.leftEye.play(this.leftEye.texture);
+            this.rightEye.play(this.rightEye.texture);
         }
     }
 

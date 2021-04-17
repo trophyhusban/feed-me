@@ -15,6 +15,9 @@ class Mouth extends Phaser.GameObjects.Sprite {
         this.maxX = x;
         this.eatingSpeedDifference = 0;
         this.sounds = sounds;
+        if (texture == "eyeball") {
+            this.speed --;
+        }
         //this.alternateY = 2;
     }
 
