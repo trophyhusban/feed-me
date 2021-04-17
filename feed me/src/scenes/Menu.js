@@ -37,7 +37,10 @@ class Menu extends Phaser.Scene {
 
         this.add.image(0, 0, "menu").setOrigin(0,0);
         
-        
+        game.settings = {
+            mouthSpeed: 3,
+            gameTimer: 60000
+        }
 
         let menuConfig = {
             fontFamily: "Courier",
@@ -61,6 +64,7 @@ class Menu extends Phaser.Scene {
         
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
     }
 
     update() {
@@ -81,6 +85,9 @@ class Menu extends Phaser.Scene {
             }
             this.sound.play("sfx_select");
             this.scene.start("playScene");
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyF)) {
+            this.scene.start("tutorialScene");
         }
         this.animateTiles();
     }
