@@ -99,12 +99,44 @@ class Tutorial extends Phaser.Scene {
             borderUISize*2.5,
             "eye"
             ).setOrigin(0,0.5);
+
+        // white bars UI
+        this.add.rectangle(
+            0, 
+            0, 
+            game.config.width, 
+            borderUISize, 
+            0xFFFFFF
+            ).setOrigin(0 ,0);
+	    this.add.rectangle(
+            0, 
+            game.config.height - borderUISize, 
+            game.config.width, 
+            borderUISize, 
+            0xFFFFFF
+            ).setOrigin(0 ,0);
+	    this.add.rectangle(
+            0, 
+            0, 
+            borderUISize, 
+            game.config.height, 
+            0xFFFFFF
+            ).setOrigin(0 ,0);
+	    this.add.rectangle(
+            game.config.width - borderUISize, 
+            0, 
+            borderUISize, 
+            game.config.height, 
+            0xFFFFFF
+            ).setOrigin(0 ,0);
         
         // making the eyes on top blink
         this.blinkTimer = 0;
         this.nextBlink = Math.floor(Math.random()*500) + 1000;
 
         this.add.sprite(0, 0, "tutorial").setOrigin(0, 0);
+
+        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
     }
 
     update() {
@@ -120,6 +152,9 @@ class Tutorial extends Phaser.Scene {
             this.nextBlink = Math.floor(Math.random()*500) + 1000;
             this.leftEye.play(this.leftEye.texture);
             this.rightEye.play(this.rightEye.texture);
+        }
+        if (Phaser.Input.Keyboard.JustDown(keyF)) {
+            this.scene.start("menuScene");
         }
     }
     animateTiles() {

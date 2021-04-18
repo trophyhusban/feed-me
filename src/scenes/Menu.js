@@ -37,6 +37,36 @@ class Menu extends Phaser.Scene {
 
         this.add.image(0, 0, "menu").setOrigin(0,0);
         
+        // white bars UI
+        this.add.rectangle(
+            0, 
+            0, 
+            game.config.width, 
+            borderUISize, 
+            0xFFFFFF
+            ).setOrigin(0 ,0);
+	    this.add.rectangle(
+            0, 
+            game.config.height - borderUISize, 
+            game.config.width, 
+            borderUISize, 
+            0xFFFFFF
+            ).setOrigin(0 ,0);
+	    this.add.rectangle(
+            0, 
+            0, 
+            borderUISize, 
+            game.config.height, 
+            0xFFFFFF
+            ).setOrigin(0 ,0);
+	    this.add.rectangle(
+            game.config.width - borderUISize, 
+            0, 
+            borderUISize, 
+            game.config.height, 
+            0xFFFFFF
+            ).setOrigin(0 ,0);
+        
         game.settings = {
             mouthSpeed: 3,
             gameTimer: 60000
