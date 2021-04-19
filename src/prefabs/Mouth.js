@@ -18,13 +18,12 @@ class Mouth extends Phaser.GameObjects.Sprite {
         if (texture == "eyeball") {
             this.speed --;
         }
-        //this.alternateY = 2;
     }
 
     update() {
         this.time++;
         if (this.isEating) {
-            this.eatingSpeedDifference = 2;
+            this.eatingSpeedDifference = 1;
         } else {
             this.eatingSpeedDifference = 0;
         }
@@ -41,11 +40,6 @@ class Mouth extends Phaser.GameObjects.Sprite {
             //this.x = config.width/2 + this.width+ ((config.width-borderUISize*2-this.width)/2) * Math.sin(this.time/100);
             this.x = Math.sin(this.time/this.sinSpeed) * (config.width-borderUISize*2-this.width)/2 + (config.width-borderUISize*2-this.width/2)/2;
         } 
-        
-        /* if (this.time%15 == 0) {
-            this.y += this.alternateY;
-            this.alternateY*= -1;
-        } */
     }
 
     reset() {

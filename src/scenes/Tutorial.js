@@ -66,7 +66,7 @@ class Tutorial extends Phaser.Scene {
         
         this.mouth2 = new Mouth(
             this, 
-            0, 
+            config.width/2, 
             borderUISize*6 + 2, 
             "red mouth",
             0, 
