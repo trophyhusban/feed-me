@@ -102,7 +102,7 @@ class Play extends Phaser.Scene {
             0, 
             2,
             "sine",
-            ["yum", "mmm"]
+            ["nom", "yummy", "mmm", "tasty"]
             ).setOrigin(0,0);
         
         this.mouth1.play(this.mouth1.texture);
@@ -115,7 +115,7 @@ class Play extends Phaser.Scene {
             0, 
             1,
             "back and forth",
-            ["nom", "yummy"]
+            ["nom", "yummy", "mmm", "tasty"]
             ).setOrigin(0,0);
         
         this.mouth2.play(this.mouth2.texture);
@@ -128,7 +128,7 @@ class Play extends Phaser.Scene {
             0, 
             -1,
             "back and forth",
-            []
+            ["ow", "ouch"]
             ).setOrigin(0,0); 
 
         // white bars UI
@@ -286,17 +286,13 @@ class Play extends Phaser.Scene {
             mouth.play(tex);
             mouth.isEating = false;
         })
-
-        let randSound = Math.floor(Math.random()*2);
         
         this.p1Score += mouth.points;
         if (this.p1Score < 0) {
             this.p1Score = 0;
         }
         this.scoreLeft.text = this.p1Score;
-        if (mouth.sounds.length > 0) {
-            this.sound.play(mouth.sounds[randSound]);
-        }
+        this.sound.play(mouth.sounds[Math.floor(Math.random()*mouth.sounds.length)]);
     }
     animateTiles() {
         this.checkers.tilePositionX -= .5;

@@ -8,10 +8,12 @@ class Menu extends Phaser.Scene {
         //load audio
         this.load.audio("sfx_select", "./assets/blip_select12.wav");
         this.load.audio("sfx_rocket", "./assets/rocket_shot.wav");
-        this.load.audio("yum", "./assets/yum.mp3");
         this.load.audio("nom", "./assets/nom.mp3");
-        this.load.audio("mmm", "./assets/mmm.mp3");
         this.load.audio("yummy", "./assets/yummy.mp3");
+        this.load.audio("mmm", "./assets/mmmm.mp3");
+        this.load.audio("tasty", "./assets/tasty.mp3");
+        this.load.audio("ouch", "./assets/ouch.mp3");
+        this.load.audio("ow", "./assets/ow.mp3");
         this.load.image("tile", "./assets/tile.png");
         this.load.image("white tile", "./assets/white_tile.png");
         this.load.image("menu", "./assets/menu.png");
@@ -102,7 +104,7 @@ class Menu extends Phaser.Scene {
             // novice mode
             game.settings = {
                 mouthSpeed: 3,
-                gameTimer: 600
+                gameTimer: 60000
             }
             this.sound.play("sfx_select");
             this.scene.start("playScene");
