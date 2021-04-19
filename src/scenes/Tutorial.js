@@ -185,7 +185,7 @@ class Tutorial extends Phaser.Scene {
         this.grid.tilePositionY += .25;
     }
     updateTriangle(points) {
-        let maxWidth = 128 + 32;
+        let maxWidth = 72;
         let currentWidth = 0;
         let bottomWidth = 48;
         let x1, y1, x2, y2, x3, y3;
@@ -205,18 +205,10 @@ class Tutorial extends Phaser.Scene {
             y3 = points[5];
         }
 
-        x2 = x1 - bottomWidth/2;
-        x3 = x1 + bottomWidth/2;
-
-        if (x2 < this.textbox.x + maxWidth) {
-            x2 = this.textbox.x + maxWidth;
-        }
-
-        if (x2 > this.textbox.x + this.textbox.width - maxWidth - bottomWidth) {
-            x2 = this.textbox.x + this.textbox.width - maxWidth - bottomWidth;
-        }
-
-        x3 = x2 + bottomWidth;
+        x2 = Math.max(x1 - bottomWidth/2, this.textbox.x + maxWidth);
+        x3 = Math.min(x1 + bottomWidth/2, this.textbox.x + this.textbox.width - maxWidth);
+        x2 = Math.min(x2, this.textbox.x + this.textbox.width - maxWidth - bottomWidth);
+        x3 = Math.max(x3, this.textbox.x + maxWidth + bottomWidth);
 
         this.textTriangle = [x1, y1, x2, y2, x3, y3];
 
