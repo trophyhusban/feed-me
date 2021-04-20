@@ -1,3 +1,12 @@
+// the reason i made a tutorial screen is because my game is pretty abstract, and i wanted 
+// to cement the theme. you are throwing chicken nuggets into a monster named derek's mouth.
+// but it doens't exactly look like that, because i chose to keep it with an abstract, graphical
+// background rather than explicitly drawing derek's skin. i did this for a couple of reasons.
+// i also wanted to make a tutorial to give some voice to derek and make the game make just a little
+// more sense. also i changed the mechanics a little bit, and i wanted to make sure the player
+// could tell the difference between the mouths and the eye, and why they were aiming for the 
+// mouths and not the eye. i hope that this all comes across in the tutorial!
+
 class Tutorial extends Phaser.Scene {
     constructor() {
         super("tutorialScene");
