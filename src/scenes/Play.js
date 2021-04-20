@@ -25,20 +25,25 @@ class Play extends Phaser.Scene {
 
     create() {
         // nuggets
-        this.anims.create({
+        this.nuggetLog = this.anims.create({
             key: "all nuggets",
             frames: this.anims.generateFrameNumbers("all nuggets", { frames: [0, 1, 2, 3, 4] }),
             frameRate: 10,
         });
 
+        console.log(this.nuggetLog);
+
         // mouth animation
-        this.anims.create({
+        this.mouthLog = this.anims.create({
             key: "pink mouth",
             frames: this.anims.generateFrameNumbers("pink mouth", { frames: [0, 1, 2, 3, 4, 5] }),
             frameRate: 10,
             repeat: -1,
             yoyo: true,
         });
+
+        console.log(this.mouthLog);
+
         this.anims.create({
             key: "red mouth",
             frames: this.anims.generateFrameNumbers("red mouth", { frames: [0, 1, 2, 3, 4, 5] }),
@@ -131,6 +136,25 @@ class Play extends Phaser.Scene {
             ["ow", "ouch"]
             ).setOrigin(0,0); 
 
+        this.nuggets = ["nugget1", "nugget2", "nugget3", "nugget4", "nugget5"];
+        
+        this.nextNugget = this.add.sprite(
+            game.config.width/2,
+            game.config.height - borderUISize*3,
+            "nugget2"
+            ).setOrigin(.5, 0);
+
+        this.p1Nugget = new Nugget(
+            this, 
+            game.config.width/2, 
+            game.config.height - borderUISize*2 - 6, 
+            "all nuggets",
+            this.nuggets,
+            this.nextNugget
+            ).setOrigin(.5, 0);
+
+        console.log(this.p1Nugget);
+
         // white bars UI
         this.add.rectangle(
             0, 
@@ -173,15 +197,7 @@ class Play extends Phaser.Scene {
             "eye"
             ).setOrigin(0,0.5);
         
-        this.nuggets = ["nugget1", "nugget2", "nugget3", "nugget4", "nugget5"];
         
-        this.p1Fry = new Fry(
-            this, 
-            game.config.width/2, 
-            game.config.height - borderUISize*3, 
-            "all nuggets",
-            this.nuggets
-            ).setOrigin(.5, 0);
 
         // defining keys
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -214,12 +230,14 @@ class Play extends Phaser.Scene {
 
         // game over flag
         this.gameOver = false;
+        this.gameOverText = "i'm still hungry... :/";
 
         // 60-second play clock
         scoreConfig.fixedWidth = 0;
         this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width/2, game.config.height/2 - borderUISize/16, 'game over', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width/2, game.config.height/2 + 64 + borderUISize/16, '"f" to restart\n⬅ or ➡ for menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 - 48 - borderUISize/8, 'game over', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2 + 48 + 14 + borderUISize/8, '"f" to restart\n⬅ or ➡ for menu', scoreConfig).setOrigin(0.5);
+            this.add.text(game.config.width/2, game.config.height/2, this.gameOverText, scoreConfig).setOrigin(0.5);
             this.gameOver = true;
         }, null, this);
     }
@@ -235,25 +253,46 @@ class Play extends Phaser.Scene {
         this.mouth2.update();
         this.mouth3.update();
 
-        if (this.gameOver == false) {
-            this.p1Fry.update();    
+        if (nuggetsEaten >= 5) {
+            this.gameOverText = "i'm still hungry... :/";
+        }
+        if (nuggetsEaten >= 10) {
+            this.gameOverText = "that was an alright meal :x";
+        }
+        if (nuggetsEaten >= 15) {
+            this.gameOverText = "i'd say i'm satisfied! :-)";
+        }
+        if (nuggetsEaten >= 20) {
+            this.gameOverText = "i am so full! thank you! ^_^";
+        }
+        if (eyeHits >= 5) {
+            this.gameOverText = "you really beat up my eye :'(";
         }
 
-        if (this.gameOver &&Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            this.scene.start("menuScene");
+        if (this.gameOver == false) {
+            this.p1Nugget.update();    
+        }
+
+        if (this.gameOver) {
+            if (Phaser.Input.Keyboard.JustDown(keyLEFT) || Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
+                this.scene.start("menuScene");
+            }
         }
         
-        if (this.checkCollision(this.p1Fry, this.mouth1)) {
-            this.p1Fry.reset();
+        if (this.checkCollision(this.p1Nugget, this.mouth1)) {
+            this.p1Nugget.reset();
             this.eatNugget(this.mouth1, "pink lick");
+            nuggetsEaten++;
         }
-        if (this.checkCollision(this.p1Fry, this.mouth2)) {
-            this.p1Fry.reset();
+        if (this.checkCollision(this.p1Nugget, this.mouth2)) {
+            this.p1Nugget.reset();
             this.eatNugget(this.mouth2, "red lick");
+            nuggetsEaten++
         }
-        if (this.checkCollision(this.p1Fry, this.mouth3)) {
-            this.p1Fry.reset();
+        if (this.checkCollision(this.p1Nugget, this.mouth3)) {
+            this.p1Nugget.reset();
             this.eatNugget(this.mouth3, "eyeball hurt");
+            eyeHits++;
         }
         this.blinkTimer ++;
         if (this.blinkTimer == this.nextBlink) {
@@ -262,14 +301,23 @@ class Play extends Phaser.Scene {
             this.leftEye.play(this.leftEye.texture);
             this.rightEye.play(this.rightEye.texture);
         }
+
+        if (this.p1Nugget.currentNugget == 5) {
+            console.log("2");
+            this.nextNugget.setTexture(this.nuggets[0]);
+        } else {
+            console.log("3");
+            this.nextNugget.setTexture(this.nuggets[this.p1Nugget.currentNugget+1]);
+        }
+
     }
 
-    checkCollision(fry, mouth) {
+    checkCollision(nugget, mouth) {
         // simple AABB checking
-        if (fry.x < mouth.x + mouth.width && 
-            fry.x + fry.width > mouth.x && 
-            mouth.y + mouth.height/2 <= fry.y + fry.height/2 &&
-            mouth.y + mouth.height/2 >= fry.y) {
+        if (nugget.x < mouth.x + mouth.width && 
+            nugget.x + nugget.width > mouth.x && 
+            mouth.y + mouth.height/2 <= nugget.y + nugget.height/2 &&
+            mouth.y + mouth.height/2 >= nugget.y) {
                 return true;
         } else {
             return false;
