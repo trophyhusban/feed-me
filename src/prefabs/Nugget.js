@@ -2,18 +2,16 @@ class Nugget extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, textureArray, nextNugget, frame) {
         super(scene, x, y, texture, frame);
 
-        // add object to existing scene
         scene.add.existing(this);
-        this.currentScene = scene;
-        this.speed = 2;
-        this.isFiring = false;
-        this.maxY = borderUISize*3;
-        this.initialX = x;
-        this.initialY = y;
-        this.throwNugget = scene.sound.add("throw nugget"); // add rocket sfx
-        this.currentNugget = 0;
-        this.nuggets = textureArray;
-        this.nextNugget = nextNugget;
+        this.speed = 2;                                     // how fast the nuggets move. they move faster vertically
+        this.isFiring = false;                              // if they are firing
+        this.maxY = borderUISize*3;                         // the max y value they can go before resetting
+        this.initialX = x;                                  // so i know where to reset them to
+        this.initialY = y;                                  // ^
+        this.throwNugget = scene.sound.add("throw nugget"); // add sfx
+        this.currentNugget = 0;                             // current nugget out of the array of five 
+        this.nuggets = textureArray;                        // the array of five nuggets
+        this.nextNugget = nextNugget;                       // the next nugget sprite
     }
 
     update() {
@@ -43,7 +41,8 @@ class Nugget extends Phaser.GameObjects.Sprite {
         if(this.y <= this.maxY + borderPadding) {
             this.reset();
         }
-        // draw the next nugget
+
+        // control the y of nextNugget
         if(this.isFiring) {
             if(this.nextNugget.y > this.initialY) {
                 this.nextNugget.y -= this.speed;
@@ -52,12 +51,14 @@ class Nugget extends Phaser.GameObjects.Sprite {
                 this.nextNugget.y == this.initialY;
             }
         }
+        // when not firing, hide the next nugget below the border
         if(this.isFiring == false) {
             this.nextNugget.y = config.height - borderUISize;
         }
     }
 
     reset() {
+        // stop firing, reset x and y, cycle to the next nugget sprite on the array
         this.isFiring = false;
         this.y = this.initialY;
         this.x = this.initialX;
@@ -66,7 +67,6 @@ class Nugget extends Phaser.GameObjects.Sprite {
             this.currentNugget = 0;
         }
         this.setTexture(this.nuggets[this.currentNugget]);
-        this.nextNugget.y = config.height;
-        
+        this.nextNugget.y = config.height - borderUISize;
     }
 }

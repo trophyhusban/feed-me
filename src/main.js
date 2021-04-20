@@ -7,9 +7,10 @@ let config = {
 
 let game = new Phaser.Game(config);
 
-let borderUISize = game.config.height /15;
+let borderUISize = game.config.height /15;   
 let borderPadding = borderUISize /3;
 let keyF, keyR, keyLEFT, keyRIGHT;
 let borderColor = 0xFFFFFF;
-let nuggetsEaten = 0;
-let eyeHits = 0;
+
+let nuggetsEaten = 0;                           // giving a different game over message depending on the number of times
+let eyeHits = 0;                                // players hit the eye or the mouths

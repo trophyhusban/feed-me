@@ -1,4 +1,3 @@
-
 class Menu extends Phaser.Scene {
     constructor() {
         super("menuScene");
@@ -20,7 +19,7 @@ class Menu extends Phaser.Scene {
     }
 
     create() {
-        // checkers
+        // checkers. i explain these more at the bottom of Play.js
         this.checkers = this.add.tileSprite(
             0, 
             0, 
@@ -37,6 +36,8 @@ class Menu extends Phaser.Scene {
             "white tile"
             ).setOrigin(0,0);
 
+        // the UI for the menu is just an image i make in illustrator LMAO 
+        // it is so much easier to make UI's in illustrator than with code lol
         this.add.image(0, 0, "menu").setOrigin(0,0);
 
         // white bars UI
@@ -74,32 +75,14 @@ class Menu extends Phaser.Scene {
             gameTimer: 60000
         }
 
-        let menuConfig = {
-            fontFamily: "Courier",
-            fontSize: "28px",
-            backgroundColor: '#F3B141',
-            color: "#843605",
-            align: "right",
-            padding: {
-                top: 5,
-                bottom: 5
-            },
-            fixedWidth: 0
-        }
-
-        //show menu text
-        //this.add.text(config.width/2, config.height/2 - borderUISize - borderPadding, "ROCKET PATROL", menuConfig).setOrigin(.5);
-        //this.add.text(config.width/2, config.height/2, 'use ⬅ and ➡ to move and "F" to fire', menuConfig).setOrigin(.5);
-        menuConfig.backgroundColor = "#00FF00";
-        menuConfig.color = "#000000";
-        //this.add.text(config.width/2, config.height/2 + borderUISize + borderPadding, "press ⬅ for novice or ➡ for expert", menuConfig).setOrigin(.5);
-        
+        // key bindings
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
     }
 
     update() {
+        // choosing difficulty
         if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
             // novice mode
             game.settings = {
@@ -121,6 +104,8 @@ class Menu extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyF)) {
             this.scene.start("tutorialScene");
         }
+        // the same as in Play.js and Tutorial.js
+        // maybe i could have the tiles and this function global, but this was easier cuz i only have three scenes
         this.animateTiles();
     }
     animateTiles() {
