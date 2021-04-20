@@ -6,8 +6,8 @@ class Menu extends Phaser.Scene {
 
     preload() {
         //load audio
-        this.load.audio("sfx_select", "./assets/blip_select12.wav");
-        this.load.audio("sfx_rocket", "./assets/rocket_shot.wav");
+        this.load.audio("blip", "./assets/blip.wav");
+        this.load.audio("throw nugget", "./assets/throw_nugget.wav");
         this.load.audio("nom", "./assets/nom.mp3");
         this.load.audio("yummy", "./assets/yummy.mp3");
         this.load.audio("mmm", "./assets/mmmm.mp3");
@@ -106,7 +106,7 @@ class Menu extends Phaser.Scene {
                 mouthSpeed: 3,
                 gameTimer: 60000
             }
-            this.sound.play("sfx_select");
+            this.sound.play("blip");
             this.scene.start("playScene");
         }
         if (Phaser.Input.Keyboard.JustDown(keyRIGHT)) {
@@ -115,7 +115,7 @@ class Menu extends Phaser.Scene {
                 mouthSpeed: 4,
                 gameTimer: 45000
             }
-            this.sound.play("sfx_select");
+            this.sound.play("blip");
             this.scene.start("playScene");
         }
         if (Phaser.Input.Keyboard.JustDown(keyF)) {
