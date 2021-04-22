@@ -14,10 +14,12 @@
 // grading them, so i have 15 extra points in case of that.
 
 let config = {
-    type: Phaser.CANVAS,
+    type: Phaser.WEBGL,
     width: 640,
     height: 480,
-    scene: [ Menu, Play, Tutorial ]
+    scene: [ Menu, Play, Tutorial ],
+    pixelArt: true,
+    zoom: 1.6
 }
 
 let game = new Phaser.Game(config);
