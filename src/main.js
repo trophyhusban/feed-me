@@ -19,7 +19,7 @@ let config = {
     height: 480,
     scene: [ Menu, Play, Tutorial ],
     pixelArt: true,
-    zoom: 1.6
+    zoom: .8
 }
 
 let game = new Phaser.Game(config);
