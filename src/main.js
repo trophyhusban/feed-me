@@ -2,6 +2,9 @@
 // 4/19/21
 // i spent a lot of time on this! i don't know how much. estimated > 20 hours
 //
+// there is an issue with the scaling that i am trying (and failing) to figure out
+// if the art looks distorted, try zooming in on the page. idk why it is happening T_T
+//
 // modifications:
 // redesign the game's artwork, ui, and sound to change its theme/aesthetic         60
 // randomize each spaceship's movement direction at the start of each play          5
@@ -18,7 +21,8 @@ let config = {
     width: 640,
     height: 480,
     scene: [ Menu, Play, Tutorial ],
-    zoom: 1
+    pixelArt: true,
+    zoom: .8
 }
 
 let game = new Phaser.Game(config);
