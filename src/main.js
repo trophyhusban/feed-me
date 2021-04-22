@@ -3,7 +3,8 @@
 // i spent a lot of time on this! i don't know how much. estimated > 20 hours
 //
 // there is an issue with the scaling that i am trying (and failing) to figure out
-// if the art looks distorted, try zooming in on the page. idk why it is happening T_T
+// for now i have resigned myself to having blurry scaled pixel art :/
+// just imagine it's really sharp and cute uwu
 //
 // modifications:
 // redesign the game's artwork, ui, and sound to change its theme/aesthetic         60
@@ -17,12 +18,10 @@
 // grading them, so i have 15 extra points in case of that.
 
 let config = {
-    type: Phaser.WEBGL,
+    type: Phaser.CANVAS,
     width: 640,
     height: 480,
     scene: [ Menu, Play, Tutorial ],
-    pixelArt: true,
-    zoom: .8
 }
 
 let game = new Phaser.Game(config);
