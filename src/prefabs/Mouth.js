@@ -47,5 +47,6 @@ class Mouth extends Phaser.GameObjects.Sprite {
         if (this.ai == "sine") {
             this.x = Math.cos(this.time/this.sinSpeed) * (config.width-borderUISize*2-this.width)/2 + (config.width-borderUISize*2-this.width/2)/2;
         } 
+        this.x = Math.round(this.x);
     }
 }

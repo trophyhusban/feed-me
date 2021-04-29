@@ -55,6 +55,7 @@ class Nugget extends Phaser.GameObjects.Sprite {
         if(this.isFiring == false) {
             this.nextNugget.y = config.height - borderUISize;
         }
+        this.x = Math.round(this.x);
     }
 
     reset() {

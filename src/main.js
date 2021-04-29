@@ -16,12 +16,17 @@
 // total                                                                            115
 // i think some of my things may not count, depending on exactly how you are 
 // grading them, so i have 15 extra points in case of that.
+//
+// i used the mouth emoji and the eye emoji from Twemoji. 
+// i changed the colors of both of them to match the colors in the game.
+// https://creativecommons.org/licenses/by/4.0/
 
 let config = {
     type: Phaser.CANVAS,
     width: 640,
     height: 480,
     scene: [ Menu, Play, Tutorial ],
+    pixelArt: false
 }
 
 let game = new Phaser.Game(config);
